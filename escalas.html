@@ -10,12 +10,12 @@
     :root {
       --color-primary: #7209b7;
       --color-secondary: #3d2d7e;
-      --color-accent: #1e3a8a;
-      --color-bright: #a855f7;
+      --color-accent: #38bdf8;  /* Azul celeste vibrante para alto contraste */
+      --color-bright: #c084fc;  /* Roxo claro fluorescente */
       --bg-dark: #0a0e27;
-      --bg-light: #f0f0f0;
-      --text-dark: #a855f7;
-      --text-light: #0a0e27;
+      --bg-card: rgba(18, 12, 45, 0.85);
+      --text-dark: #f1f5f9;     /* Texto claro de altíssima legibilidade */
+      --text-muted: #cbd5e1;    /* Texto secundário legível */
     }
 
     * {
@@ -34,17 +34,14 @@
     @keyframes neon-flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
         text-shadow: 
-          0 0 10px rgba(168, 85, 247, 1), 
-          0 0 20px rgba(168, 85, 247, 0.8),
-          0 0 40px rgba(168, 85, 247, 0.5),
-          0 0 80px rgba(30, 58, 138, 0.4);
+          0 0 10px rgba(192, 132, 252, 1), 
+          0 0 20px rgba(192, 132, 252, 0.8),
+          0 0 40px rgba(114, 9, 183, 0.6);
         opacity: 1;
       }
       20%, 24%, 55% {
-        text-shadow: 
-          0 0 5px rgba(168, 85, 247, 0.5),
-          0 0 10px rgba(30, 58, 138, 0.3);
-        opacity: 0.7;
+        text-shadow: 0 0 5px rgba(192, 132, 252, 0.5);
+        opacity: 0.8;
       }
     }
 
@@ -56,44 +53,22 @@
     @keyframes border-circuit {
       0%, 100% { 
         border-color: var(--color-primary);
-        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.05);
+        box-shadow: 0 0 20px rgba(192, 132, 252, 0.3);
       }
       50% { 
         border-color: var(--color-accent);
-        box-shadow: 0 0 40px rgba(30, 58, 138, 0.5), inset 0 0 20px rgba(30, 58, 138, 0.1);
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
       }
     }
 
     @keyframes pulse-neon {
       0%, 100% { 
-        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
         transform: scale(1);
       }
       50% { 
-        box-shadow: 0 0 40px rgba(168, 85, 247, 0.8);
-        transform: scale(1.01);
-      }
-    }
-
-    @keyframes glitch-text {
-      0% { clip-path: inset(40% 0 61% 0); transform: translate(0); }
-      20% { clip-path: inset(92% 0 1% 0); transform: translate(-3px, 2px); }
-      40% { clip-path: inset(43% 0 1% 0); transform: translate(-3px, -2px); }
-      60% { clip-path: inset(25% 0 58% 0); transform: translate(3px, 2px); }
-      80% { clip-path: inset(54% 0 7% 0); transform: translate(3px, -2px); }
-      100% { clip-path: inset(58% 0 43% 0); transform: translate(0); }
-    }
-
-    @keyframes corner-glow {
-      0%, 100% { 
-        box-shadow: 
-          inset -2px -2px 15px rgba(168, 85, 247, 0.2),
-          inset 2px 2px 15px rgba(30, 58, 138, 0.2);
-      }
-      50% { 
-        box-shadow: 
-          inset -2px -2px 25px rgba(168, 85, 247, 0.4),
-          inset 2px 2px 25px rgba(30, 58, 138, 0.4);
+        box-shadow: 0 0 35px rgba(192, 132, 252, 0.8);
+        transform: scale(1.02);
       }
     }
 
@@ -109,7 +84,7 @@
       line-height: 1.6;
       transition: all 0.3s ease;
       position: relative;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
     body::before {
@@ -122,8 +97,8 @@
       background: 
         repeating-linear-gradient(
           0deg,
-          rgba(168, 85, 247, 0.03) 0px,
-          rgba(168, 85, 247, 0.03) 1px,
+          rgba(192, 132, 252, 0.03) 0px,
+          rgba(192, 132, 252, 0.03) 1px,
           transparent 1px,
           transparent 2px
         );
@@ -137,32 +112,35 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: var(--bg-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       z-index: 1000;
-      transition: all 0.7s ease;
+      transition: all 0.5s ease;
       cursor: pointer;
-      padding: 2rem;
+      padding: 2rem 1.25rem 4rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .splash-screen.hidden {
       opacity: 0;
       pointer-events: none;
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
     .matrix-bg {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       overflow: hidden;
+      pointer-events: none;
     }
 
     .matrix-char {
@@ -171,7 +149,7 @@
       font-family: 'Courier New', monospace;
       font-weight: 700;
       font-size: 14px;
-      opacity: 0.5;
+      opacity: 0.4;
       z-index: 1;
     }
 
@@ -181,22 +159,25 @@
       text-align: center;
       width: 100%;
       max-width: 760px;
+      margin: auto 0;
+      padding-bottom: 2rem;
     }
 
     .splash-title {
-      font-size: 56px;
+      font-size: 48px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       font-family: 'Orbitron', monospace;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
       animation: neon-flicker 2.5s ease-in-out infinite;
-      text-shadow: 0 0 30px var(--color-primary), 0 0 60px var(--color-bright), 0 0 100px rgba(168, 85, 247, 0.5);
+      text-shadow: 0 0 30px var(--color-primary), 0 0 60px var(--color-bright);
     }
 
     @media (max-width: 600px) {
       .splash-title {
-        font-size: 36px;
+        font-size: 32px;
         letter-spacing: 2px;
       }
     }
@@ -206,24 +187,24 @@
       color: var(--color-accent);
       text-transform: uppercase;
       letter-spacing: 2px;
-      margin-bottom: 2.5rem;
-      opacity: 0.9;
+      margin-bottom: 2rem;
+      font-weight: 700;
       animation: neon-flicker 3s ease-in-out infinite;
     }
 
     .splash-info {
-      background: rgba(114, 9, 183, 0.1);
-      border: 2px solid var(--color-primary);
-      padding: 2.5rem;
-      border-radius: 4px;
-      margin-bottom: 2.5rem;
+      background: var(--bg-card);
+      border: 2px solid var(--color-bright);
+      padding: 2rem 1.5rem;
+      border-radius: 6px;
+      margin-bottom: 2rem;
       width: 100%;
-      box-shadow: 0 0 50px rgba(168, 85, 247, 0.35), inset 0 0 25px rgba(168, 85, 247, 0.08);
+      box-shadow: 0 0 35px rgba(192, 132, 252, 0.35), inset 0 0 20px rgba(192, 132, 252, 0.1);
       animation: border-circuit 3s ease-in-out infinite;
     }
 
     .splash-info h2 {
-      color: var(--color-bright);
+      color: #ffffff;
       font-size: 18px;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -232,39 +213,44 @@
     }
 
     .splash-info p {
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.8;
-      color: var(--text-dark);
+      color: #f1f5f9;
       margin-bottom: 1rem;
     }
 
     .splash-info ul {
       list-style: none;
       font-size: 13px;
-      color: var(--color-accent);
       text-align: left;
       margin-top: 1.25rem;
       display: inline-block;
+      width: 100%;
+      max-width: 500px;
     }
 
     .splash-info li {
       margin-bottom: 0.75rem;
-      padding-left: 1.25rem;
+      padding-left: 1.5rem;
       position: relative;
+      color: #f8fafc;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .splash-info li::before {
       content: '▸';
       position: absolute;
       left: 0;
-      color: var(--color-primary);
+      color: var(--color-accent);
+      font-weight: 900;
     }
 
     .splash-button {
-      background: transparent;
-      border: 3px solid var(--color-primary);
-      color: var(--text-dark);
-      padding: 1.1rem 3.5rem;
+      background: var(--color-primary);
+      border: 3px solid var(--color-bright);
+      color: #ffffff;
+      padding: 1.1rem 3rem;
       font-size: 15px;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -274,44 +260,35 @@
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
-      animation: fade-in-up 1s ease-out backwards, pulse-neon 2.5s ease-in-out infinite;
-    }
-
-    .splash-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
+      border-radius: 4px;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.6);
+      display: inline-block;
       width: 100%;
-      height: 100%;
-      background: var(--color-primary);
-      z-index: -1;
-      transition: left 0.3s ease;
+      max-width: 380px;
     }
-
-    .splash-button:hover::before { left: 0; }
 
     .splash-button:hover {
+      background: var(--color-bright);
       color: var(--bg-dark);
-      box-shadow: 0 0 50px var(--color-primary), 0 0 30px var(--color-bright);
-      transform: scale(1.08);
+      box-shadow: 0 0 45px var(--color-bright);
+      transform: scale(1.05);
     }
 
     .splash-hint {
-      margin-top: 1.5rem;
-      font-size: 10px;
+      margin-top: 1.25rem;
+      font-size: 11px;
       letter-spacing: 1px;
       color: var(--color-accent);
-      opacity: 0.7;
+      opacity: 0.9;
       text-transform: uppercase;
-      animation: neon-flicker 4s ease-in-out infinite;
+      font-weight: 700;
     }
 
     /* ===== APP PRINCIPAL ===== */
     .app-container {
       opacity: 0;
-      transform: scale(0.97);
-      transition: all 0.7s ease;
+      transform: scale(0.98);
+      transition: all 0.5s ease;
       pointer-events: none;
     }
 
@@ -324,15 +301,13 @@
     .container {
       max-width: 1600px;
       margin: 0 auto;
-      padding: 1.5rem 2.5rem 3rem;
+      padding: 1.25rem 1.5rem 3rem;
       position: relative;
       z-index: 5;
     }
 
-    @media (max-width: 900px) {
-      .container {
-        padding: 1.5rem 1rem 3rem;
-      }
+    @media (max-width: 768px) {
+      .container { padding: 1rem 0.75rem 2.5rem; }
     }
 
     /* ===== CABEÇALHO ===== */
@@ -340,24 +315,23 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
-      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      padding: 0.9rem 1.25rem;
       border: 2px solid var(--color-primary);
-      background: rgba(114, 9, 183, 0.05);
+      background: var(--bg-card);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), inset 0 0 15px rgba(168, 85, 247, 0.05);
-      animation: border-circuit 3s ease-in-out infinite;
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.2);
       gap: 1rem;
       flex-wrap: wrap;
     }
 
     .header h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
       font-family: 'Orbitron', monospace;
-      animation: neon-flicker 4s ease-in-out infinite;
+      color: #ffffff;
     }
 
     .header-actions {
@@ -383,33 +357,33 @@
 
     .header-btn:hover {
       background: var(--color-primary);
-      color: var(--bg-dark);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.6);
     }
 
     .header-btn.active-audio {
-      border-color: #10b981;
-      color: #10b981;
+      border-color: #34d399;
+      color: #34d399;
     }
 
     .header-btn.active-audio:hover {
-      background: #10b981;
+      background: #34d399;
       color: var(--bg-dark);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
     }
 
-    /* ===== SELETORES (sempre visíveis) ===== */
+    /* ===== SELETORES ===== */
     .selectors-panel {
       margin-bottom: 1.5rem;
-      padding: 1.5rem 1.75rem;
+      padding: 1.25rem;
       border: 2px solid var(--color-primary);
-      background: rgba(0, 0, 0, 0.3);
+      background: var(--bg-card);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
     }
 
     @media (min-width: 900px) {
-      .selectors-panel { padding: 2rem 2.5rem; }
+      .selectors-panel { padding: 1.75rem 2rem; }
     }
 
     .selector-block {
@@ -430,22 +404,23 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      font-weight: 700;
     }
 
     .current-value {
       color: var(--color-accent);
-      font-weight: 400;
+      font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: none;
       margin-left: auto;
       font-size: 11px;
     }
 
-    /* Instrumentos: grid 2x2 */
+    /* Instrumentos: grid 2x2 / 4 colunas */
     .instrument-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     @media (min-width: 600px) {
@@ -453,7 +428,7 @@
     }
 
     .instrument-btn {
-      background: transparent;
+      background: rgba(0, 0, 0, 0.3);
       border: 2px solid var(--color-primary);
       color: var(--text-dark);
       padding: 0.75rem 0.5rem;
@@ -463,173 +438,98 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-family: 'Orbitron', monospace;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       border-radius: 2px;
     }
 
     .instrument-btn .icon {
       font-size: 20px;
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
 
     .instrument-btn:hover {
       border-color: var(--color-bright);
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
     }
 
     .instrument-btn.active {
       background: var(--color-primary);
-      color: #fff;
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.8);
-    }
-
-    /* Escalas: cards em grid, expandem ao clicar (tipo baralho) */
-    .scale-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .scale-card {
-      border: 2px solid var(--color-primary);
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      overflow: hidden;
-    }
-
-    .scale-card:hover {
-      box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);
-      transform: translateY(-2px);
-    }
-
-    .scale-card.selected {
       border-color: var(--color-bright);
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.8);
     }
 
-    .scale-card.selected .scale-card-header {
-      background: var(--color-primary);
-      color: #fff;
-    }
-
-    .scale-card.expanded {
-      grid-column: 1 / -1;
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
-    }
-
-    .scale-grid.has-expanded .scale-card:not(.expanded) {
-      display: none;
-    }
-
-    .scale-card-close {
-      background: transparent;
-      border: 1px solid var(--color-accent);
-      color: var(--color-accent);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', monospace;
-      padding: 0.4rem 0.9rem;
-      border-radius: 2px;
-      cursor: pointer;
-      margin-top: 0.75rem;
-      margin-left: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .scale-card-close:hover {
-      background: var(--color-accent);
-      color: var(--bg-dark);
-    }
-
-    .scale-card-header {
-      padding: 0.9rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Seletor de Escalas: Grid limpo e dinâmico */
+    .scale-select-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 0.5rem;
-      font-family: 'Orbitron', monospace;
-      font-weight: 700;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-dark);
     }
 
-    .scale-card-chevron {
-      font-size: 11px;
-      transition: transform 0.25s ease;
-      flex-shrink: 0;
-      opacity: 0.7;
+    @media (max-width: 480px) {
+      .scale-select-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
-    .scale-card.expanded .scale-card-chevron {
-      transform: rotate(90deg);
-    }
-
-    .scale-card-details {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-      border-top: 1px solid transparent;
-    }
-
-    .scale-card.expanded .scale-card-details {
-      max-height: 600px;
-      border-top: 1px solid var(--color-primary);
-    }
-
-    .scale-card-details-inner {
-      padding: 1rem 1.25rem 1.25rem;
-    }
-
-    .scale-card-details-inner p {
-      font-size: 12px;
-      line-height: 1.6;
-      color: var(--text-dark);
-      margin-bottom: 0.75rem;
-    }
-
-    .scale-card-details-inner .mini-label {
-      color: var(--color-bright);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', monospace;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .scale-card-select-btn {
-      margin-top: 0.5rem;
-      background: transparent;
-      border: 2px solid var(--color-bright);
-      color: var(--color-bright);
-      padding: 0.55rem 1.2rem;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', monospace;
-      font-weight: 700;
+    .scale-select-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--color-primary);
+      color: #f1f5f9;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
       cursor: pointer;
-      border-radius: 2px;
+      font-size: 11px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      border-radius: 3px;
       transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
     }
 
-    .scale-card-select-btn:hover,
-    .scale-card-select-btn.is-active {
-      background: var(--color-bright);
-      color: var(--bg-dark);
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+    .scale-select-btn:hover {
+      border-color: var(--color-bright);
+      background: rgba(114, 9, 183, 0.25);
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+      color: #ffffff;
+    }
+
+    .scale-select-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-bright);
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.8);
+    }
+
+    /* Banner rápido da escala ativa */
+    .active-scale-banner {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid var(--color-accent);
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    .active-scale-banner strong {
+      color: var(--color-accent);
+      font-family: 'Orbitron', monospace;
+      text-transform: uppercase;
+      margin-right: 0.4rem;
     }
 
     /* Tônicas: grid compacto */
     .note-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     @media (min-width: 600px) {
@@ -637,14 +537,14 @@
     }
 
     .note-grid .btn {
-      padding: 0.6rem 0.3rem;
+      padding: 0.6rem 0.2rem;
       min-height: 42px;
       font-size: 11px;
     }
 
     /* ===== BOTÕES GERAIS ===== */
     .btn {
-      background: transparent;
+      background: rgba(0, 0, 0, 0.3);
       border: 2px solid var(--color-primary);
       color: var(--text-dark);
       cursor: pointer;
@@ -661,20 +561,21 @@
 
     .btn:hover {
       background: var(--color-primary);
-      color: var(--bg-dark);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.6);
     }
 
     .btn.active {
       background: var(--color-primary);
-      color: var(--bg-dark);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.9);
+      border-color: var(--color-bright);
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.9);
     }
 
     .btn.secondary {
       border-color: var(--color-accent);
       color: var(--color-accent);
-      padding: 0.7rem 1.4rem;
+      padding: 0.75rem 1.4rem;
       min-height: auto;
       font-size: 12px;
     }
@@ -682,7 +583,7 @@
     .btn.secondary:hover {
       background: var(--color-accent);
       color: var(--bg-dark);
-      box-shadow: 0 0 20px rgba(30, 58, 138, 0.7);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.7);
     }
 
     /* ===== NAVEGAÇÃO EM ABAS ===== */
@@ -694,16 +595,16 @@
     }
 
     @media (min-width: 700px) {
-      .tabs-nav { grid-template-columns: repeat(5, 1fr); }
+      .tabs-nav { grid-template-columns: repeat(4, 1fr); }
     }
 
     .tab-btn {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       border: 2px solid var(--color-secondary);
       color: var(--text-dark);
-      padding: 0.75rem 0.5rem;
+      padding: 0.8rem 0.5rem;
       cursor: pointer;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-family: 'Orbitron', monospace;
@@ -721,14 +622,14 @@
 
     .tab-btn:hover {
       border-color: var(--color-bright);
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
     }
 
     .tab-btn.active {
       background: var(--color-primary);
       border-color: var(--color-bright);
-      color: #fff;
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.8);
     }
 
     .tab-page {
@@ -745,19 +646,18 @@
       margin-bottom: 1.5rem;
       padding: 1.25rem;
       border: 2px solid var(--color-primary);
-      background: rgba(0, 0, 0, 0.3);
+      background: var(--bg-card);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15), inset 0 0 10px rgba(168, 85, 247, 0.03);
-      animation: corner-glow 3s ease-in-out infinite;
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
     }
 
     @media (min-width: 900px) {
-      .section { padding: 1.75rem 2.25rem; }
+      .section { padding: 1.75rem 2rem; }
     }
 
     .section h2 {
       color: var(--color-bright);
-      font-size: 13px;
+      font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 1rem;
@@ -768,13 +668,13 @@
 
     /* ===== FRETBOARD ===== */
     .fretboard-container {
-      margin: 0.5rem 0;
+      margin: 0.75rem 0;
     }
 
     .fretboard {
       display: block;
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       padding: 1rem;
       border-radius: 2px;
       border: 2px solid var(--color-primary);
@@ -786,6 +686,10 @@
       gap: 3px;
     }
 
+    .string:last-child {
+      margin-bottom: 0;
+    }
+
     .string-label {
       flex: 0 0 44px;
       padding: 0.5rem 0.25rem;
@@ -795,43 +699,45 @@
       border: 1px solid var(--color-accent);
       border-radius: 2px;
       font-size: 11px;
+      background: rgba(56, 189, 248, 0.1);
     }
 
     .fret-cell {
       flex: 1 1 0;
       min-width: 0;
-      padding: 0.65rem 0.15rem;
+      padding: 0.7rem 0.15rem;
       text-align: center;
-      border: 1px solid var(--color-primary);
-      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(114, 9, 183, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       font-size: 11px;
       font-weight: 700;
       border-radius: 2px;
-      color: var(--color-bright);
-      transition: all 0.2s ease;
+      color: #94a3b8;
+      transition: all 0.15s ease;
       user-select: none;
     }
 
     .fret-cell.in-scale {
-      background: rgba(168, 85, 247, 0.15);
-      color: var(--color-bright);
-      box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+      background: rgba(192, 132, 252, 0.15);
+      color: #ffffff;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 8px rgba(192, 132, 252, 0.25);
     }
 
     .fret-cell.root-note {
-      background: rgba(168, 85, 247, 0.35);
+      background: rgba(192, 132, 252, 0.4);
       border-color: var(--color-bright);
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
-      color: #fff;
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.7);
+      color: #ffffff;
       font-weight: 900;
     }
 
-    .fret-cell.interval-selected {
-      border-color: var(--color-accent);
-      background: rgba(30, 58, 138, 0.5);
-      box-shadow: 0 0 18px rgba(30, 58, 138, 0.9), inset 0 0 8px rgba(59, 130, 246, 0.6);
-      color: #fff;
-      transform: scale(1.08);
+    .fret-cell.fret-played {
+      background: var(--color-bright) !important;
+      color: var(--bg-dark) !important;
+      transform: scale(1.15);
+      z-index: 5;
+      box-shadow: 0 0 25px #ffffff !important;
     }
 
     @media (max-width: 640px) {
@@ -853,7 +759,7 @@
     /* ===== CORDAS SOLTAS ===== */
     .open-strings {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
       gap: 0.75rem;
       margin: 0.75rem 0 1.25rem;
     }
@@ -863,14 +769,15 @@
       padding: 0.75rem;
       text-align: center;
       border-radius: 2px;
-      background: rgba(30, 58, 138, 0.15);
+      background: rgba(56, 189, 248, 0.1);
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .open-string-card:hover {
-      background: rgba(30, 58, 138, 0.4);
-      box-shadow: 0 0 15px rgba(30, 58, 138, 0.6);
+      background: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+      transform: translateY(-2px);
     }
 
     .open-string-card .label {
@@ -879,12 +786,13 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 0.4rem;
+      font-weight: 700;
     }
 
     .open-string-card .note {
       font-size: 20px;
       font-weight: 900;
-      color: var(--color-bright);
+      color: #ffffff;
       font-family: 'Orbitron', monospace;
     }
 
@@ -897,56 +805,25 @@
     }
 
     .detail-card {
-      padding: 1rem;
+      padding: 1.1rem;
       border: 1px solid var(--color-primary);
-      background: rgba(168, 85, 247, 0.08);
-      border-radius: 2px;
+      background: rgba(192, 132, 252, 0.08);
+      border-radius: 3px;
     }
 
     .detail-card h4 {
       color: var(--color-bright);
-      font-size: 11px;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
       font-family: 'Orbitron', monospace;
     }
 
     .detail-card p {
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.6;
       color: var(--text-dark);
-    }
-
-    /* ===== INTERVALO ===== */
-    .interval-display {
-      background: rgba(30, 58, 138, 0.15);
-      border: 2px solid var(--color-accent);
-      padding: 1.25rem;
-      border-radius: 2px;
-      text-align: center;
-      margin: 0.5rem 0 1rem;
-      min-height: 70px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .interval-display .label {
-      font-size: 10px;
-      color: var(--color-accent);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 0.4rem;
-    }
-
-    .interval-display .value {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--color-bright);
-      font-family: 'Orbitron', monospace;
-      word-break: break-word;
     }
 
     /* ===== SEQUÊNCIAS ===== */
@@ -976,9 +853,9 @@
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 12px;
-      color: var(--color-bright);
-      background: rgba(168, 85, 247, 0.15);
+      font-size: 13px;
+      color: #ffffff;
+      background: rgba(192, 132, 252, 0.2);
       cursor: pointer;
       transition: all 0.2s ease;
       flex-shrink: 0;
@@ -986,29 +863,30 @@
     }
 
     .scale-note:hover {
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 20px var(--color-bright);
       transform: scale(1.15);
-      background: rgba(168, 85, 247, 0.3);
+      background: var(--color-primary);
     }
 
     .scale-note.root {
-      background: rgba(168, 85, 247, 0.4);
+      background: rgba(192, 132, 252, 0.45);
       border-color: var(--color-bright);
-      color: #fff;
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.7);
     }
 
     .scale-separator {
       color: var(--color-accent);
-      opacity: 0.5;
+      font-weight: 700;
+      opacity: 0.7;
       margin: 0 0.1rem;
     }
 
-    /* ===== BADGES E CARDS ===== */
+    /* ===== BADGES E CARDS DE BANDAS ===== */
     .note-badge {
       display: inline-block;
       padding: 0.5rem 1rem;
-      background: rgba(168, 85, 247, 0.1);
+      background: rgba(192, 132, 252, 0.15);
       border: 1px solid var(--color-primary);
       color: var(--text-dark);
       margin: 0.25rem;
@@ -1020,54 +898,58 @@
     }
 
     .note-badge:hover {
-      background: rgba(168, 85, 247, 0.3);
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+      background: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(192, 132, 252, 0.6);
     }
 
     .note-badge.root {
-      background: rgba(168, 85, 247, 0.3);
+      background: rgba(192, 132, 252, 0.4);
       border-color: var(--color-bright);
-      color: #fff;
+      color: #ffffff;
       font-weight: 900;
     }
 
     .banda-item {
-      background: rgba(30, 58, 138, 0.1);
+      background: rgba(56, 189, 248, 0.08);
       border: 1px solid var(--color-accent);
-      padding: 0.75rem;
+      padding: 0.9rem;
       margin-bottom: 0.75rem;
-      border-radius: 2px;
+      border-radius: 3px;
     }
 
     .banda-nome {
       color: var(--color-accent);
       font-weight: 700;
-      font-size: 12px;
-      margin-bottom: 0.25rem;
+      font-size: 13px;
+      margin-bottom: 0.3rem;
+      font-family: 'Orbitron', monospace;
     }
 
     .banda-tons {
       color: var(--text-dark);
-      font-size: 11px;
+      font-size: 12px;
     }
 
     .exercise-desc {
-      font-size: 12px;
+      font-size: 13px;
       margin-bottom: 1rem;
-      color: var(--text-dark);
-      opacity: 0.9;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
     /* ===== RESPONSIVO ===== */
     @media (max-width: 600px) {
       .container { padding: 1rem 0.75rem 2.5rem; }
       .header h1 { font-size: 15px; }
+      .header-actions { width: 100%; justify-content: space-between; }
+      .header-btn { flex: 1; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-<!-- TELA INICIAL — clique em qualquer lugar para entrar -->
+<!-- TELA INICIAL — rolagem limpa e texto com alto contraste -->
 <div class="splash-screen" id="splash-screen" onclick="enterSystem()">
   <div class="matrix-bg" id="matrix-bg"></div>
   <div class="splash-content">
@@ -1079,10 +961,9 @@
       <p>Explore escalas em múltiplos instrumentos com visual futurista, áudio em tempo real e conceitos teóricos.</p>
       <ul>
         <li>🎸 Contrabaixo, Violão, Ukulele, Cavaquinho</li>
-        <li>🎵 10 Escalas diferentes com exemplos reais</li>
+        <li>🎵 10 Escalas fundamentais com exemplos reais</li>
         <li>🔊 Áudio interativo em tempo real via Web Audio API</li>
-        <li>🎯 Exercícios práticos e sequências aleatórias</li>
-        <li>📏 Compreenda intervalos e harmonia</li>
+        <li>🎯 Exercícios práticos e treino de improvisação</li>
       </ul>
     </div>
 
@@ -1104,7 +985,7 @@
     </div>
   </div>
 
-  <!-- SELETORES PRINCIPAIS (sempre visíveis) -->
+  <!-- SELETORES PRINCIPAIS -->
   <div class="selectors-panel">
     <div class="selector-block">
       <div class="selector-label">🎼 Instrumento <span class="current-value" id="current-instrument-label"></span></div>
@@ -1113,7 +994,8 @@
 
     <div class="selector-block">
       <div class="selector-label">🎵 Escala <span class="current-value" id="current-scale-label"></span></div>
-      <div class="scale-grid" id="scale-buttons"></div>
+      <div class="scale-select-grid" id="scale-buttons"></div>
+      <div class="active-scale-banner" id="active-scale-banner"></div>
     </div>
 
     <div class="selector-block">
@@ -1130,9 +1012,6 @@
     <button class="tab-btn" data-tab="about" onclick="selectTab('about', this)">
       <span class="tab-icon">📖</span>Sobre a Escala
     </button>
-    <button class="tab-btn" data-tab="interval" onclick="selectTab('interval', this)">
-      <span class="tab-icon">📏</span>Intervalo
-    </button>
     <button class="tab-btn" data-tab="exercises" onclick="selectTab('exercises', this)">
       <span class="tab-icon">🎯</span>Exercícios
     </button>
@@ -1147,13 +1026,9 @@
       <h2>🎸 Cordas Soltas</h2>
       <div class="open-strings" id="open-strings-container"></div>
       <h2>🔍 Braço do Instrumento</h2>
-      <p class="exercise-desc">💡 Clique nas casas do braço para ouvir a nota e selecione 2 notas para calcular o intervalo.</p>
+      <p class="exercise-desc">💡 Clique em qualquer casa do braço para ouvir a nota e visualizar sua posição na escala.</p>
       <div class="fretboard-container">
         <div class="fretboard" id="fretboard-container-inner"></div>
-      </div>
-      <div class="interval-display" style="margin-top: 1.25rem;">
-        <div class="label">Intervalo Selecionado</div>
-        <div class="value" id="interval-display-inline">Clique em 2 notas do braço</div>
       </div>
     </div>
   </div>
@@ -1162,7 +1037,7 @@
   <div class="tab-page" id="tab-about">
     <div class="section">
       <h2 id="scale-title">—</h2>
-      <p id="scale-description" style="font-size: 12px; margin-bottom: 1rem;"></p>
+      <p id="scale-description" style="font-size: 13px; margin-bottom: 1rem; color: var(--text-dark);"></p>
       <div class="info-stack" id="scale-details"></div>
     </div>
 
@@ -1186,29 +1061,11 @@
     </div>
   </div>
 
-  <!-- PÁGINA: INTERVALO -->
-  <div class="tab-page" id="tab-interval">
-    <div class="section">
-      <h2>📏 Intervalo Entre Notas</h2>
-      <p class="exercise-desc">Vá até a aba "Braço" e clique em duas notas do braço — o intervalo aparece aqui.</p>
-      <div class="interval-display">
-        <div class="label">Intervalo</div>
-        <div class="value" id="interval-display">Selecione 2 notas</div>
-      </div>
-      <div id="interval-name-info" style="display: none;">
-        <div class="detail-card">
-          <h4>📖 Sobre Este Intervalo</h4>
-          <p id="interval-explanation">Selecione 2 notas para ver a explicação.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- PÁGINA: EXERCÍCIOS -->
   <div class="tab-page" id="tab-exercises">
     <div class="section">
       <h2>🎯 Notas Abertas Primeiro</h2>
-      <p class="exercise-desc">Começa com as cordas soltas e adiciona casas gradualmente. Ótimo para aquecer e ganhar confiança!</p>
+      <p class="exercise-desc">Começa com as cordas soltas e adiciona notas da escala gradualmente. Ótimo para aquecer e ganhar confiança!</p>
       <button class="btn secondary" onclick="generateOpenStringsFirst()">▶ Gerar Sequência</button>
       <div class="sequence-container" style="margin-top: 1rem;">
         <div class="note-sequence" id="open-first-sequence"></div>
@@ -1217,7 +1074,7 @@
 
     <div class="section">
       <h2>🎲 Sequência Aleatória</h2>
-      <p class="exercise-desc">Gera uma sequência aleatória de notas da escala para treinar improviso.</p>
+      <p class="exercise-desc">Gera uma sequência aleatória de notas da escala para treinar solos e improvisação.</p>
       <button class="btn secondary" onclick="generateRandomSequence()">🎲 Gerar Sequência Aleatória</button>
       <div class="sequence-container" style="margin-top: 1rem;">
         <div class="note-sequence" id="random-sequence"></div>
@@ -1266,7 +1123,7 @@
       intervals: [0, 2, 4, 5, 7, 9, 11],
       title: 'Maior (Jônica)',
       description: 'Som alegre, luminoso e bem-estruturado. A base da harmonia ocidental.',
-      usage: 'Pop, rock, qualquer coisa em tom maior. O padrão.',
+      usage: 'Pop, rock, qualquer música em tom maior. O padrão universal.',
       example: 'Ex: Blink-182, Sum 41, Good Charlotte — som otimista e cristalino',
       interesting: 'O modo 1 da escala maior. Intervalos: T, 2M, 3M, 4J, 5J, 6M, 7M.',
       melody: ['C', 'E', 'G'],
@@ -1278,9 +1135,9 @@
     },
     minor: {
       intervals: [0, 2, 3, 5, 7, 8, 10],
-      title: 'Menor Natural (Eólia)',
-      description: 'Som melancólico, introspectivo mas não dramatizado. Muito comum em rock e metal.',
-      usage: 'Rock, metal, qualquer coisa em tom menor. O segundo padrão mais usado.',
+      title: 'Menor (Eólia)',
+      description: 'Som melancólico e introspectivo. Muito comum em rock, pop e metal.',
+      usage: 'Rock, metal, pop sensível. O segundo padrão mais utilizado na música.',
       example: 'Ex: Nirvana, Green Day, CPM 22 — som emo/angst/sensível',
       interesting: 'O modo 6 da escala maior. Relativa menor da maior (3 semitons abaixo).',
       melody: ['A', 'C', 'E'],
@@ -1292,11 +1149,11 @@
     },
     pentatonic_minor: {
       intervals: [0, 3, 5, 7, 10],
-      title: 'Pentatônica Menor',
-      description: 'Som leve mas pesado, muito usada em blues e metal. 5 notas só — bem fácil de memorizar.',
-      usage: 'Blues, metal, rock. Perfeita pra começar a improvisar.',
-      example: 'Ex: Deftones, Slipknot, Limp Bizkit, Pantera — som gritado e selvagem',
-      interesting: 'Só 5 notas! Ótima pra iniciantes. Nenhuma nota dissonante — tudo combina bem.',
+      title: 'Penta Menor',
+      description: 'Versátil e direta. 5 notas fáceis de memorizar com sonoridade marcante.',
+      usage: 'Blues, metal, rock. Perfeita para dar os primeiros passos na improvisação.',
+      example: 'Ex: Deftones, Slipknot, Limp Bizkit, Pantera — solos diretos e marcantes',
+      interesting: 'Apenas 5 notas. Nenhuma nota dissonante — excelente para iniciantes.',
       melody: ['A', 'C', 'E'],
       bandas: [
         { icon: '🌀', nome: 'Deftones', tons: 'F#, E, A' },
@@ -1306,11 +1163,11 @@
     },
     pentatonic_major: {
       intervals: [0, 2, 4, 7, 9],
-      title: 'Pentatônica Maior',
-      description: 'Som feliz e fluido, 5 notas maiores. Muito usado em pop-rock e funk rock.',
-      usage: 'Pop, funk rock, solos leves. Quando a menor é pesada demais.',
-      example: 'Ex: Pop-rock BR, funk rock — som dançante e positivo',
-      interesting: 'Relativa maior da pentatônica menor (3 semitons acima). Mesmas notas, contexto diferente.',
+      title: 'Penta Maior',
+      description: 'Som fluido, leve e positivo com 5 notas maiores.',
+      usage: 'Pop, funk rock, solos leves e contagiantes.',
+      example: 'Ex: Pop-rock nacional, funk rock — som dançante e solar',
+      interesting: 'Relativa maior da pentatônica menor. Mesmas notas, contexto diferente.',
       melody: ['C', 'E', 'G'],
       bandas: [
         { icon: '🎉', nome: 'Pop-rock BR', tons: 'D, A, E' },
@@ -1321,10 +1178,10 @@
     dorian: {
       intervals: [0, 2, 3, 5, 7, 9, 10],
       title: 'Dórica',
-      description: 'Dórica é jazzy e cool — 2º modo da escala maior. Som sofisticado com toque menor mas mais brilhante.',
-      usage: 'Jazz, prog metal, rock progressivo. Para quando quer um som menor sofisticado.',
-      example: 'Ex: Dream Theater, prog metal — som complexo e inteligente',
-      interesting: 'É o 2º modo da escala maior. Traz um toque "jazzy" e sofisticado.',
+      description: 'Sonoridade jazzy e sofisticada. Tom menor com toque brilhante (6ª Maior).',
+      usage: 'Jazz, prog metal, rock progressivo.',
+      example: 'Ex: Dream Theater, prog metal — harmonia rica e inteligente',
+      interesting: 'É o 2º modo da escala maior. A 6ª maior traz leveza ao tom menor.',
       melody: ['D', 'F', 'A'],
       bandas: [
         { icon: '🧠', nome: 'Dream Theater', tons: 'D, E, F#' },
@@ -1335,10 +1192,10 @@
     phrygian: {
       intervals: [0, 1, 3, 5, 7, 8, 10],
       title: 'Frígia',
-      description: 'Frígia é exótica e dramatizada — tem um sotaque "espanhol" ou "oriental" muito característico. Som sombrio.',
-      usage: 'Metal progressivo, bandas experimentais. Para quando você quer soar misterioso.',
-      example: 'Ex: System of a Down, passagens de metal progressivo — som único',
-      interesting: 'O semitom no começo dá o "sotaque espanhol". Raro mas super característico.',
+      description: 'Som exótico e tenso com sotaque oriental ou flamenco.',
+      usage: 'Metal progressivo, passagens misteriosas e composições intensas.',
+      example: 'Ex: System of a Down — riffs marcantes e atmosfera sombria',
+      interesting: 'O semitom inicial (2ª menor) gera a tensão exótica característica.',
       melody: ['E', 'F', 'G', 'B'],
       bandas: [
         { icon: '🌍', nome: 'System of a Down', tons: 'E, D, F#' },
@@ -1349,10 +1206,10 @@
     lydian: {
       intervals: [0, 2, 4, 6, 7, 9, 11],
       title: 'Lídio',
-      description: 'Lídio é a maior "levantada" — som mágico, onírico, quase irreal. 4ª aumentada característico.',
-      usage: 'Seções experimentais, interlúdios. Sensação de levitation.',
-      example: 'Ex: Interlúdios experimentais em bandas prog/post-grunge — som levitante',
-      interesting: 'Som levitante e etéreo — perfeito para momentos surreais em composições.',
+      description: 'Escala maior elevadora — sensação onírica e mágico-levitante.',
+      usage: 'Interlúdios e passagens místicas em composições modernas.',
+      example: 'Ex: Interlúdios experimentais prog/post-grunge — atmosfera flutuante',
+      interesting: 'A 4ª aumentada (trítono) confere o toque surreal e flutuante.',
       melody: ['F', 'G', 'A', 'C'],
       bandas: [
         { icon: '🌌', nome: 'Interlúdios prog', tons: 'F#, A, D' },
@@ -1362,10 +1219,10 @@
     mixolydian: {
       intervals: [0, 2, 4, 5, 7, 9, 10],
       title: 'Mixolídio',
-      description: 'Mixolídio é como a maior em modo blues — som que naturally soa "rockeador". Muito usado em rock clássico.',
-      usage: 'Rock clássico, blues rock, solos com atitude. Som naturalmente pesado mas maior.',
-      example: 'Ex: Riffs de rock clássico (Led Zeppelin style) — som confiante',
-      interesting: 'A "maior para rock". Muito usada em blues rock e heavy rock clássico.',
+      description: 'A "maior com atitude de rock" — tom alegre com 7ª menor de blues.',
+      usage: 'Rock clássico, blues rock e solos cheios de peso.',
+      example: 'Ex: Riffs de rock clássico (Led Zeppelin style) — som autêntico e forte',
+      interesting: 'Combinada com a pentatônica menor cria a sonoridade clássica do rock.',
       melody: ['G', 'B', 'D', 'F'],
       bandas: [
         { icon: '🎸', nome: 'Rock clássico', tons: 'E, A, D' },
@@ -1376,10 +1233,10 @@
     harmonic_minor: {
       intervals: [0, 2, 3, 5, 7, 8, 11],
       title: 'Menor Harmônica',
-      description: 'Menor harmônica é a menor com um intervalo diferente que cria drama clássico — som cinematográfico e intenso.',
-      usage: 'Metal neoclássico, momentos de tensão. Para impacto máximo.',
-      example: 'Ex: Yngwie Malmsteen, metal progressivo neoclássico — som épico',
-      interesting: 'O intervalo especial (7ª maior) cria uma tensão harmônica muito única.',
+      description: 'Som dramático, épico e cinematográfico com toque clássico.',
+      usage: 'Metal neoclássico, momentos de grande tensão e dramaticidade.',
+      example: 'Ex: Yngwie Malmsteen — solos ágeis e neoclássicos',
+      interesting: 'A 7ª maior gera um salto característico de 1 semitom para a tônica.',
       melody: ['A', 'C', 'E', 'G#'],
       bandas: [
         { icon: '⚡', nome: 'Yngwie Malmsteen', tons: 'G#, E, A' },
@@ -1390,10 +1247,10 @@
     blues: {
       intervals: [0, 3, 5, 6, 7, 10],
       title: 'Blues Menor',
-      description: 'Blues é a pentatônica menor com uma nota extra — a "blue note" (5ª diminuída/4ª aug). Som "choroso" e soulful.',
-      usage: 'Blues, rock gritty, soul rock. Quando você quer sentimento bruto.',
-      example: 'Ex: Alice in Chains, Soundgarden, SRV — som rasgado e soulful',
-      interesting: 'A blue note (5ª aumentada/diminuída) é o tempero que torna o som tão característico.',
+      description: 'Pentatônica menor enriquecida com a marcante "blue note" (5ª dim).',
+      usage: 'Blues, rock cru, grunge e solos expressivos.',
+      example: 'Ex: Alice in Chains, Soundgarden, SRV — som rasgado e emotivo',
+      interesting: 'A blue note cria o tom "choroso" e expressivo característico.',
       melody: ['A', 'C', 'D', 'D#', 'E'],
       bandas: [
         { icon: '🔗', nome: 'Alice in Chains', tons: 'E, D, A' },
@@ -1403,30 +1260,9 @@
     }
   };
 
-  const intervalNames = {
-    0: 'Uníssono', 1: 'Semitom / 2ª Menor', 2: '2ª Maior', 3: '3ª Menor',
-    4: '3ª Maior', 5: '4ª Justa', 6: 'Trítono / 4ª Aumentada', 7: '5ª Justa',
-    8: '5ª Aumentada / 6ª Menor', 9: '6ª Maior', 10: '7ª Menor', 11: '7ª Maior'
-  };
-
-  const intervalExplanations = {
-    1: 'Semitom — o menor intervalo. Cria tensão máxima. Usado em passagens intensas.',
-    2: '2ª Maior — intervalo pequeno, amigável. Comum em melodias pop.',
-    3: '3ª Menor — cria som melancólico, triste. Base de acordes menores.',
-    4: '3ª Maior — som alegre, luminoso. Base de acordes maiores.',
-    5: '4ª Justa — intervalo estável, usado em linhas de baixo estruturadas.',
-    6: 'Trítono — som misterioso, dissonante. Evitado na música clássica tradicional, adorado em metal.',
-    7: '5ª Justa — intervalo perfeito, muito estável. O "power chord" de toda escala.',
-    8: '5ª Aumentada — som brilhante e tenso. Raro mas impactante.',
-    9: '6ª Maior — som quente, jazzístico. Muito usado em baladas.',
-    10: '7ª Menor — cria som de "resolução retardada". Comum em blues e rock.',
-    11: '7ª Maior — som brilhante e aberto. Muito usado em jazz sofisticado.'
-  };
-
   let currentInstrument = 'bass';
   let currentScale = 'major';
   let currentRoot = 'A';
-  let selectedNotesForInterval = [];
   let audioCtx = null;
   let soundEnabled = true;
 
@@ -1465,7 +1301,7 @@
       osc.start();
       osc.stop(audioCtx.currentTime + duration);
     } catch (err) {
-      console.warn('Audio playback error:', err);
+      console.warn('Audio error:', err);
     }
   }
 
@@ -1530,46 +1366,20 @@
   }
 
   function initializeButtons() {
+    // Seletor limpo de escalas
     const scaleButtons = document.getElementById('scale-buttons');
     scaleButtons.innerHTML = '';
     Object.keys(scales).forEach((scaleKey) => {
       const info = scales[scaleKey];
-      const card = document.createElement('div');
-      card.className = 'scale-card';
-      card.dataset.scale = scaleKey;
-      if (scaleKey === currentScale) card.classList.add('selected');
-
-      card.innerHTML = `
-        <div class="scale-card-header">
-          <span>${info.title}</span>
-          <span class="scale-card-chevron">▸</span>
-        </div>
-        <div class="scale-card-details">
-          <div class="scale-card-details-inner">
-            <span class="mini-label">💡 Como Usar</span>
-            <p>${info.usage}</p>
-            <span class="mini-label">🎸 Exemplo</span>
-            <p>${info.example}</p>
-            <button class="scale-card-select-btn" data-select="${scaleKey}">▸ Usar Esta Escala</button>
-            <button class="scale-card-close">✕ Fechar</button>
-          </div>
-        </div>
-      `;
-
-      card.querySelector('.scale-card-header').onclick = () => toggleScaleCard(scaleKey);
-      card.querySelector('.scale-card-select-btn').onclick = (e) => {
-        e.stopPropagation();
-        selectScale(scaleKey);
-      };
-      card.querySelector('.scale-card-close').onclick = (e) => {
-        e.stopPropagation();
-        toggleScaleCard(scaleKey);
-      };
-
-      scaleButtons.appendChild(card);
+      const btn = document.createElement('button');
+      btn.className = 'scale-select-btn';
+      if (scaleKey === currentScale) btn.classList.add('active');
+      btn.textContent = info.title;
+      btn.onclick = () => selectScale(scaleKey);
+      scaleButtons.appendChild(btn);
     });
-    refreshScaleSelectButtons();
 
+    // Botões de Notas Tônicas
     const noteButtons = document.getElementById('note-buttons');
     noteButtons.innerHTML = '';
     notes.forEach(note => {
@@ -1585,30 +1395,11 @@
     });
   }
 
-  function toggleScaleCard(scaleKey) {
-    const grid = document.getElementById('scale-buttons');
-    const card = document.querySelector(`.scale-card[data-scale="${scaleKey}"]`);
-    const wasExpanded = card.classList.contains('expanded');
-    document.querySelectorAll('.scale-card').forEach(c => c.classList.remove('expanded'));
-    if (!wasExpanded) {
-      card.classList.add('expanded');
-      grid.classList.add('has-expanded');
-    } else {
-      grid.classList.remove('has-expanded');
-    }
-  }
-
-  function refreshScaleSelectButtons() {
-    document.querySelectorAll('.scale-card-select-btn').forEach(btn => {
-      btn.classList.toggle('is-active', btn.dataset.select === currentScale);
-    });
-  }
-
   function selectScale(scaleKey) {
-    document.querySelectorAll('.scale-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`.scale-card[data-scale="${scaleKey}"]`).classList.add('selected');
     currentScale = scaleKey;
-    refreshScaleSelectButtons();
+    document.querySelectorAll('.scale-select-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === scales[scaleKey].title);
+    });
     updateDisplay();
   }
 
@@ -1634,6 +1425,12 @@
     document.getElementById('current-scale-label').textContent = scaleInfo.title;
     document.getElementById('current-root-label').textContent = currentRoot;
 
+    // Banner da escala ativa
+    document.getElementById('active-scale-banner').innerHTML = `
+      <strong>💡 ${scaleInfo.title}:</strong> ${scaleInfo.description} <br>
+      <span style="font-size: 11px; opacity: 0.85; margin-top: 0.2rem; display: block;">🎯 <em>${scaleInfo.usage}</em></span>
+    `;
+
     // Cordas soltas
     const openStringsContainer = document.getElementById('open-strings-container');
     openStringsContainer.innerHTML = stringLabels.map((stringNote, idx) => `
@@ -1646,7 +1443,6 @@
     // Fretboard
     const container = document.getElementById('fretboard-container-inner');
     container.innerHTML = '';
-    selectedNotesForInterval = [];
 
     stringLabels.forEach((stringTonic, stringIndex) => {
       const stringDiv = document.createElement('div');
@@ -1670,18 +1466,12 @@
 
         cell.style.cursor = 'pointer';
         cell.onclick = () => {
-          // Tocando som da nota exata no braço
           const baseFreq = stringFrequencies[currentInstrument][stringIndex];
           const fretFreq = baseFreq * Math.pow(2, fret / 12);
           playFreq(fretFreq);
 
-          selectedNotesForInterval.push({ note: noteAtFret, string: stringIndex, fret: fret, el: cell });
-          if (selectedNotesForInterval.length > 2) {
-            const removed = selectedNotesForInterval.shift();
-            removed.el.classList.remove('interval-selected');
-          }
-          cell.classList.add('interval-selected');
-          updateInterval();
+          cell.classList.add('fret-played');
+          setTimeout(() => cell.classList.remove('fret-played'), 300);
         };
 
         stringDiv.appendChild(cell);
@@ -1690,7 +1480,7 @@
       container.appendChild(stringDiv);
     });
 
-    // Info
+    // Info na aba "Sobre a Escala"
     document.getElementById('scale-title').textContent = `${scaleInfo.title} em ${currentRoot}`;
     document.getElementById('scale-description').textContent = scaleInfo.description;
 
@@ -1702,11 +1492,11 @@
       <div class="detail-card">
         <h4>🎸 Exemplos</h4>
         <p>${scaleInfo.example}</p>
-        <p style="margin-top: 0.5rem;">${scaleInfo.interesting}</p>
+        <p style="margin-top: 0.5rem; color: var(--color-accent);">${scaleInfo.interesting}</p>
       </div>
     `;
 
-    // Melodia
+    // Melodia Sugerida
     document.getElementById('melody-notes').innerHTML = scaleInfo.melody.map(note => {
       return `<div class="scale-note" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}</div>`;
     }).join('');
@@ -1727,49 +1517,16 @@
       bandasList.innerHTML = scaleInfo.bandas.map(banda => `
         <div class="banda-item">
           <div class="banda-nome">${banda.icon} ${banda.nome}</div>
-          <div class="banda-tons"><strong>Tons:</strong> ${banda.tons}</div>
+          <div class="banda-tons"><strong>Tons Populares:</strong> ${banda.tons}</div>
         </div>
       `).join('');
     }
 
-    // Notas
+    // Todas as Notas
     document.getElementById('notes-list').innerHTML = scaleNotes.map(note => {
       const isRoot = note === currentRoot;
       return `<div class="note-badge ${isRoot ? 'root' : ''}" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}${isRoot ? ' ●' : ''}</div>`;
     }).join('');
-
-    // Reset interval display ao trocar escala/instrumento
-    document.getElementById('interval-display').textContent = 'Selecione 2 notas';
-    document.getElementById('interval-display-inline').textContent = 'Clique em 2 notas do braço';
-    document.getElementById('interval-name-info').style.display = 'none';
-  }
-
-  function updateInterval() {
-    const display = document.getElementById('interval-display');
-    const displayInline = document.getElementById('interval-display-inline');
-    const explanationDiv = document.getElementById('interval-name-info');
-    
-    if (selectedNotesForInterval.length === 2) {
-      const note1Index = notes.indexOf(selectedNotesForInterval[0].note);
-      const note2Index = notes.indexOf(selectedNotesForInterval[1].note);
-      const semitones = (note2Index - note1Index + 12) % 12;
-      
-      const intervalName = intervalNames[semitones];
-      const text = `${selectedNotesForInterval[0].note} → ${selectedNotesForInterval[1].note} = ${intervalName}`;
-      display.textContent = text;
-      displayInline.textContent = text;
-      
-      document.getElementById('interval-explanation').textContent = intervalExplanations[semitones] || 'Intervalo especial.';
-      explanationDiv.style.display = 'block';
-    } else if (selectedNotesForInterval.length === 1) {
-      display.textContent = `${selectedNotesForInterval[0].note} → clique em mais 1 nota`;
-      displayInline.textContent = `${selectedNotesForInterval[0].note} → clique em mais 1 nota`;
-      explanationDiv.style.display = 'none';
-    } else {
-      display.textContent = 'Clique em 2 notas';
-      displayInline.textContent = 'Clique em 2 notas do braço';
-      explanationDiv.style.display = 'none';
-    }
   }
 
   function generateRandomSequence() {
@@ -1804,7 +1561,7 @@
   function createMatrixEffect() {
     const matrixBg = document.getElementById('matrix-bg');
     const chars = '01アイウエオカキクケコサシスセソタチツテト';
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 40; i++) {
       const char = document.createElement('div');
       char.className = 'matrix-char';
       char.textContent = chars[Math.floor(Math.random() * chars.length)];
