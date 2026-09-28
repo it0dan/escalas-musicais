@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ ESCALAS.MUSICAIS — Edição Cósmica</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+    :root {
+      --color-primary: #7209b7;
+      --color-secondary: #3d2d7e;
+      --color-accent: #1e3a8a;
+      --color-bright: #a855f7;
+      --bg-dark: #0a0e27;
+      --bg-light: #f0f0f0;
+      --text-dark: #a855f7;
+      --text-light: #0a0e27;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes matrix-fall {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    @keyframes neon-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 
+          0 0 10px rgba(168, 85, 247, 1), 
+          0 0 20px rgba(168, 85, 247, 0.8),
+          0 0 40px rgba(168, 85, 247, 0.5),
+          0 0 80px rgba(30, 58, 138, 0.4);
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        text-shadow: 
+          0 0 5px rgba(168, 85, 247, 0.5),
+          0 0 10px rgba(30, 58, 138, 0.3);
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes scan-lines {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(10px); }
+    }
+
+    @keyframes border-circuit {
+      0%, 100% { 
+        border-color: var(--color-primary);
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.05);
+      }
+      50% { 
+        border-color: var(--color-accent);
+        box-shadow: 0 0 40px rgba(30, 58, 138, 0.5), inset 0 0 20px rgba(30, 58, 138, 0.1);
+      }
+    }
+
+    @keyframes pulse-neon {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 0 40px rgba(168, 85, 247, 0.8);
+        transform: scale(1.01);
+      }
+    }
+
+    @keyframes glitch-text {
+      0% { clip-path: inset(40% 0 61% 0); transform: translate(0); }
+      20% { clip-path: inset(92% 0 1% 0); transform: translate(-3px, 2px); }
+      40% { clip-path: inset(43% 0 1% 0); transform: translate(-3px, -2px); }
+      60% { clip-path: inset(25% 0 58% 0); transform: translate(3px, 2px); }
+      80% { clip-path: inset(54% 0 7% 0); transform: translate(3px, -2px); }
+      100% { clip-path: inset(58% 0 43% 0); transform: translate(0); }
+    }
+
+    @keyframes corner-glow {
+      0%, 100% { 
+        box-shadow: 
+          inset -2px -2px 15px rgba(168, 85, 247, 0.2),
+          inset 2px 2px 15px rgba(30, 58, 138, 0.2);
+      }
+      50% { 
+        box-shadow: 
+          inset -2px -2px 25px rgba(168, 85, 247, 0.4),
+          inset 2px 2px 25px rgba(30, 58, 138, 0.4);
+      }
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      font-family: 'Courier New', 'Courier', monospace;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      line-height: 1.6;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          rgba(168, 85, 247, 0.03) 0px,
+          rgba(168, 85, 247, 0.03) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      pointer-events: none;
+      animation: scan-lines 0.1s linear infinite;
+      z-index: 10;
+    }
+
+    /* ===== TELA INICIAL ===== */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: all 0.7s ease;
+      cursor: pointer;
+      padding: 2rem;
+    }
+
+    .splash-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.1);
+    }
+
+    .matrix-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+    }
+
+    .matrix-char {
+      position: absolute;
+      color: var(--color-primary);
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      opacity: 0.5;
+      z-index: 1;
+    }
+
+    .splash-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .splash-title {
+      font-size: 56px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-family: 'Orbitron', monospace;
+      margin-bottom: 1rem;
+      animation: neon-flicker 2.5s ease-in-out infinite;
+      text-shadow: 0 0 30px var(--color-primary), 0 0 60px var(--color-bright), 0 0 100px rgba(168, 85, 247, 0.5);
+    }
+
+    @media (max-width: 600px) {
+      .splash-title {
+        font-size: 36px;
+        letter-spacing: 2px;
+      }
+    }
+
+    .splash-subtitle {
+      font-size: 15px;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      animation: neon-flicker 3s ease-in-out infinite;
+    }
+
+    .splash-info {
+      background: rgba(114, 9, 183, 0.1);
+      border: 2px solid var(--color-primary);
+      padding: 2.5rem;
+      border-radius: 4px;
+      margin-bottom: 2.5rem;
+      width: 100%;
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.35), inset 0 0 25px rgba(168, 85, 247, 0.08);
+      animation: border-circuit 3s ease-in-out infinite;
+    }
+
+    .splash-info h2 {
+      color: var(--color-bright);
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1.25rem;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .splash-info p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .splash-info ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--color-accent);
+      text-align: left;
+      margin-top: 1.25rem;
+      display: inline-block;
+    }
+
+    .splash-info li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .splash-info li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+    }
+
+    .splash-button {
+      background: transparent;
+      border: 3px solid var(--color-primary);
+      color: var(--text-dark);
+      padding: 1.1rem 3.5rem;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: fade-in-up 1s ease-out backwards, pulse-neon 2.5s ease-in-out infinite;
+    }
+
+    .splash-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--color-primary);
+      z-index: -1;
+      transition: left 0.3s ease;
+    }
+
+    .splash-button:hover::before { left: 0; }
+
+    .splash-button:hover {
+      color: var(--bg-dark);
+      box-shadow: 0 0 50px var(--color-primary), 0 0 30px var(--color-bright);
+      transform: scale(1.08);
+    }
+
+    .splash-hint {
+      margin-top: 1.5rem;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--color-accent);
+      opacity: 0.7;
+      text-transform: uppercase;
+      animation: neon-flicker 4s ease-in-out infinite;
+    }
+
+    /* ===== APP PRINCIPAL ===== */
+    .app-container {
+      opacity: 0;
+      transform: scale(0.97);
+      transition: all 0.7s ease;
+      pointer-events: none;
+    }
+
+    .app-container.visible {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 1.5rem 2.5rem 3rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        padding: 1.5rem 1rem 3rem;
+      }
+    }
+
+    /* ===== CABEÇALHO ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--color-primary);
+      background: rgba(114, 9, 183, 0.05);
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), inset 0 0 15px rgba(168, 85, 247, 0.05);
+      animation: border-circuit 3s ease-in-out infinite;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-family: 'Orbitron', monospace;
+      animation: neon-flicker 4s ease-in-out infinite;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .header-btn {
+      background: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--text-dark);
+      padding: 0.5rem 1rem;
+      font-size: 11px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      border-radius: 2px;
+    }
+
+    .header-btn:hover {
+      background: var(--color-primary);
+      color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+    }
+
+    .header-btn.active-audio {
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    .header-btn.active-audio:hover {
+      background: #10b981;
+      color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    /* ===== SELETORES (sempre visíveis) ===== */
+    .selectors-panel {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      border: 2px solid var(--color-primary);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+    }
+
+    @media (min-width: 900px) {
+      .selectors-panel { padding: 2rem 2.5rem; }
+    }
+
+    .selector-block {
+      margin-bottom: 1.25rem;
+    }
+
+    .selector-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .selector-label {
+      color: var(--color-bright);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.6rem;
+      font-family: 'Orbitron', monospace;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .current-value {
+      color: var(--color-accent);
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      margin-left: auto;
+      font-size: 11px;
+    }
+
+    /* Instrumentos: grid 2x2 */
+    .instrument-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+    @media (min-width: 600px) {
+      .instrument-buttons { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .instrument-btn {
+      background: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--text-dark);
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .instrument-btn .icon {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .instrument-btn:hover {
+      border-color: var(--color-bright);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    }
+
+    .instrument-btn.active {
+      background: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.8);
+    }
+
+    /* Escalas: cards em grid, expandem ao clicar (tipo baralho) */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .scale-card {
+      border: 2px solid var(--color-primary);
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .scale-card:hover {
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .scale-card.selected {
+      border-color: var(--color-bright);
+    }
+
+    .scale-card.selected .scale-card-header {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .scale-card.expanded {
+      grid-column: 1 / -1;
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    .scale-grid.has-expanded .scale-card:not(.expanded) {
+      display: none;
+    }
+
+    .scale-card-close {
+      background: transparent;
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', monospace;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2px;
+      cursor: pointer;
+      margin-top: 0.75rem;
+      margin-left: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .scale-card-close:hover {
+      background: var(--color-accent);
+      color: var(--bg-dark);
+    }
+
+    .scale-card-header {
+      padding: 0.9rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dark);
+    }
+
+    .scale-card-chevron {
+      font-size: 11px;
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .scale-card.expanded .scale-card-chevron {
+      transform: rotate(90deg);
+    }
+
+    .scale-card-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      border-top: 1px solid transparent;
+    }
+
+    .scale-card.expanded .scale-card-details {
+      max-height: 600px;
+      border-top: 1px solid var(--color-primary);
+    }
+
+    .scale-card-details-inner {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .scale-card-details-inner p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .scale-card-details-inner .mini-label {
+      color: var(--color-bright);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', monospace;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .scale-card-select-btn {
+      margin-top: 0.5rem;
+      background: transparent;
+      border: 2px solid var(--color-bright);
+      color: var(--color-bright);
+      padding: 0.55rem 1.2rem;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .scale-card-select-btn:hover,
+    .scale-card-select-btn.is-active {
+      background: var(--color-bright);
+      color: var(--bg-dark);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+    }
+
+    /* Tônicas: grid compacto */
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 600px) {
+      .note-grid { grid-template-columns: repeat(12, 1fr); }
+    }
+
+    .note-grid .btn {
+      padding: 0.6rem 0.3rem;
+      min-height: 42px;
+      font-size: 11px;
+    }
+
+    /* ===== BOTÕES GERAIS ===== */
+    .btn {
+      background: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--text-dark);
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.3;
+    }
+
+    .btn:hover {
+      background: var(--color-primary);
+      color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+    }
+
+    .btn.active {
+      background: var(--color-primary);
+      color: var(--bg-dark);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.9);
+    }
+
+    .btn.secondary {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      padding: 0.7rem 1.4rem;
+      min-height: auto;
+      font-size: 12px;
+    }
+
+    .btn.secondary:hover {
+      background: var(--color-accent);
+      color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(30, 58, 138, 0.7);
+    }
+
+    /* ===== NAVEGAÇÃO EM ABAS ===== */
+    .tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 700px) {
+      .tabs-nav { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    .tab-btn {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid var(--color-secondary);
+      color: var(--text-dark);
+      padding: 0.75rem 0.5rem;
+      cursor: pointer;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      border-radius: 2px;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .tab-btn .tab-icon {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 0.25rem;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--color-bright);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+    }
+
+    .tab-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-bright);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+    }
+
+    .tab-page {
+      display: none;
+      animation: fade-in-up 0.4s ease-out;
+    }
+
+    .tab-page.active {
+      display: block;
+    }
+
+    /* ===== SEÇÕES ===== */
+    .section {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      border: 2px solid var(--color-primary);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15), inset 0 0 10px rgba(168, 85, 247, 0.03);
+      animation: corner-glow 3s ease-in-out infinite;
+    }
+
+    @media (min-width: 900px) {
+      .section { padding: 1.75rem 2.25rem; }
+    }
+
+    .section h2 {
+      color: var(--color-bright);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', monospace;
+      border-bottom: 1px solid var(--color-primary);
+      padding-bottom: 0.5rem;
+    }
+
+    /* ===== FRETBOARD ===== */
+    .fretboard-container {
+      margin: 0.5rem 0;
+    }
+
+    .fretboard {
+      display: block;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 2px;
+      border: 2px solid var(--color-primary);
+    }
+
+    .string {
+      display: flex;
+      margin-bottom: 0.6rem;
+      gap: 3px;
+    }
+
+    .string-label {
+      flex: 0 0 44px;
+      padding: 0.5rem 0.25rem;
+      text-align: center;
+      font-weight: 700;
+      color: var(--color-accent);
+      border: 1px solid var(--color-accent);
+      border-radius: 2px;
+      font-size: 11px;
+    }
+
+    .fret-cell {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0.65rem 0.15rem;
+      text-align: center;
+      border: 1px solid var(--color-primary);
+      background: rgba(0, 0, 0, 0.5);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 2px;
+      color: var(--color-bright);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .fret-cell.in-scale {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--color-bright);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+    }
+
+    .fret-cell.root-note {
+      background: rgba(168, 85, 247, 0.35);
+      border-color: var(--color-bright);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .fret-cell.interval-selected {
+      border-color: var(--color-accent);
+      background: rgba(30, 58, 138, 0.5);
+      box-shadow: 0 0 18px rgba(30, 58, 138, 0.9), inset 0 0 8px rgba(59, 130, 246, 0.6);
+      color: #fff;
+      transform: scale(1.08);
+    }
+
+    @media (max-width: 640px) {
+      .fretboard-container {
+        overflow-x: auto;
+      }
+      .fretboard {
+        width: max-content;
+        min-width: 100%;
+      }
+      .string-label {
+        flex: 0 0 36px;
+      }
+      .fret-cell {
+        flex: 0 0 42px;
+      }
+    }
+
+    /* ===== CORDAS SOLTAS ===== */
+    .open-strings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 0.75rem;
+      margin: 0.75rem 0 1.25rem;
+    }
+
+    .open-string-card {
+      border: 2px solid var(--color-accent);
+      padding: 0.75rem;
+      text-align: center;
+      border-radius: 2px;
+      background: rgba(30, 58, 138, 0.15);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .open-string-card:hover {
+      background: rgba(30, 58, 138, 0.4);
+      box-shadow: 0 0 15px rgba(30, 58, 138, 0.6);
+    }
+
+    .open-string-card .label {
+      font-size: 10px;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.4rem;
+    }
+
+    .open-string-card .note {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--color-bright);
+      font-family: 'Orbitron', monospace;
+    }
+
+    /* ===== INFO CARDS ===== */
+    .info-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .detail-card {
+      padding: 1rem;
+      border: 1px solid var(--color-primary);
+      background: rgba(168, 85, 247, 0.08);
+      border-radius: 2px;
+    }
+
+    .detail-card h4 {
+      color: var(--color-bright);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.6rem;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .detail-card p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-dark);
+    }
+
+    /* ===== INTERVALO ===== */
+    .interval-display {
+      background: rgba(30, 58, 138, 0.15);
+      border: 2px solid var(--color-accent);
+      padding: 1.25rem;
+      border-radius: 2px;
+      text-align: center;
+      margin: 0.5rem 0 1rem;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .interval-display .label {
+      font-size: 10px;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.4rem;
+    }
+
+    .interval-display .value {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--color-bright);
+      font-family: 'Orbitron', monospace;
+      word-break: break-word;
+    }
+
+    /* ===== SEQUÊNCIAS ===== */
+    .sequence-container {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 2px;
+      border: 1px solid var(--color-primary);
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .note-sequence {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .scale-note {
+      width: 46px;
+      height: 46px;
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: var(--color-bright);
+      background: rgba(168, 85, 247, 0.15);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .scale-note:hover {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+      transform: scale(1.15);
+      background: rgba(168, 85, 247, 0.3);
+    }
+
+    .scale-note.root {
+      background: rgba(168, 85, 247, 0.4);
+      border-color: var(--color-bright);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+    }
+
+    .scale-separator {
+      color: var(--color-accent);
+      opacity: 0.5;
+      margin: 0 0.1rem;
+    }
+
+    /* ===== BADGES E CARDS ===== */
+    .note-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid var(--color-primary);
+      color: var(--text-dark);
+      margin: 0.25rem;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .note-badge:hover {
+      background: rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+
+    .note-badge.root {
+      background: rgba(168, 85, 247, 0.3);
+      border-color: var(--color-bright);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .banda-item {
+      background: rgba(30, 58, 138, 0.1);
+      border: 1px solid var(--color-accent);
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-radius: 2px;
+    }
+
+    .banda-nome {
+      color: var(--color-accent);
+      font-weight: 700;
+      font-size: 12px;
+      margin-bottom: 0.25rem;
+    }
+
+    .banda-tons {
+      color: var(--text-dark);
+      font-size: 11px;
+    }
+
+    .exercise-desc {
+      font-size: 12px;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+      opacity: 0.9;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 600px) {
+      .container { padding: 1rem 0.75rem 2.5rem; }
+      .header h1 { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TELA INICIAL — clique em qualquer lugar para entrar -->
+<div class="splash-screen" id="splash-screen" onclick="enterSystem()">
+  <div class="matrix-bg" id="matrix-bg"></div>
+  <div class="splash-content">
+    <h1 class="splash-title">⚡ ESCALAS ⚡</h1>
+    <p class="splash-subtitle">Sistema Cósmico de Aprendizado</p>
+    
+    <div class="splash-info">
+      <h2>🎼 Bem-vindo, Musicista</h2>
+      <p>Explore escalas em múltiplos instrumentos com visual futurista, áudio em tempo real e conceitos teóricos.</p>
+      <ul>
+        <li>🎸 Contrabaixo, Violão, Ukulele, Cavaquinho</li>
+        <li>🎵 10 Escalas diferentes com exemplos reais</li>
+        <li>🔊 Áudio interativo em tempo real via Web Audio API</li>
+        <li>🎯 Exercícios práticos e sequências aleatórias</li>
+        <li>📏 Compreenda intervalos e harmonia</li>
+      </ul>
+    </div>
+
+    <button class="splash-button" onclick="event.stopPropagation(); enterSystem()">▸ ENTRAR NO SISTEMA ▸</button>
+    <p class="splash-hint">ou clique em qualquer lugar da tela</p>
+  </div>
+</div>
+
+<!-- APP PRINCIPAL -->
+<div class="app-container" id="app-container">
+<div class="container">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <h1>⚡ ESCALAS.MUSICAIS ⚡</h1>
+    <div class="header-actions">
+      <button class="header-btn active-audio" id="audio-toggle-btn" onclick="toggleAudio()">🔊 Som ON</button>
+      <button class="header-btn" onclick="backToSplash()">◂ Início</button>
+    </div>
+  </div>
+
+  <!-- SELETORES PRINCIPAIS (sempre visíveis) -->
+  <div class="selectors-panel">
+    <div class="selector-block">
+      <div class="selector-label">🎼 Instrumento <span class="current-value" id="current-instrument-label"></span></div>
+      <div class="instrument-buttons" id="instrument-buttons"></div>
+    </div>
+
+    <div class="selector-block">
+      <div class="selector-label">🎵 Escala <span class="current-value" id="current-scale-label"></span></div>
+      <div class="scale-grid" id="scale-buttons"></div>
+    </div>
+
+    <div class="selector-block">
+      <div class="selector-label">🎹 Tônica <span class="current-value" id="current-root-label"></span></div>
+      <div class="note-grid" id="note-buttons"></div>
+    </div>
+  </div>
+
+  <!-- NAVEGAÇÃO EM ABAS -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="fretboard" onclick="selectTab('fretboard', this)">
+      <span class="tab-icon">🔍</span>Braço
+    </button>
+    <button class="tab-btn" data-tab="about" onclick="selectTab('about', this)">
+      <span class="tab-icon">📖</span>Sobre a Escala
+    </button>
+    <button class="tab-btn" data-tab="interval" onclick="selectTab('interval', this)">
+      <span class="tab-icon">📏</span>Intervalo
+    </button>
+    <button class="tab-btn" data-tab="exercises" onclick="selectTab('exercises', this)">
+      <span class="tab-icon">🎯</span>Exercícios
+    </button>
+    <button class="tab-btn" data-tab="bands" onclick="selectTab('bands', this)">
+      <span class="tab-icon">🎸</span>Bandas & Tons
+    </button>
+  </div>
+
+  <!-- PÁGINA: BRAÇO DO INSTRUMENTO -->
+  <div class="tab-page active" id="tab-fretboard">
+    <div class="section">
+      <h2>🎸 Cordas Soltas</h2>
+      <div class="open-strings" id="open-strings-container"></div>
+      <h2>🔍 Braço do Instrumento</h2>
+      <p class="exercise-desc">💡 Clique nas casas do braço para ouvir a nota e selecione 2 notas para calcular o intervalo.</p>
+      <div class="fretboard-container">
+        <div class="fretboard" id="fretboard-container-inner"></div>
+      </div>
+      <div class="interval-display" style="margin-top: 1.25rem;">
+        <div class="label">Intervalo Selecionado</div>
+        <div class="value" id="interval-display-inline">Clique em 2 notas do braço</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA: SOBRE A ESCALA -->
+  <div class="tab-page" id="tab-about">
+    <div class="section">
+      <h2 id="scale-title">—</h2>
+      <p id="scale-description" style="font-size: 12px; margin-bottom: 1rem;"></p>
+      <div class="info-stack" id="scale-details"></div>
+    </div>
+
+    <div class="section">
+      <h2>🎼 Sequência da Escala</h2>
+      <div class="sequence-container">
+        <div class="note-sequence" id="scale-sequence-notes"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔤 Todas as Notas</h2>
+      <div id="notes-list"></div>
+    </div>
+
+    <div class="section">
+      <h2>🎶 Melodia Sugerida</h2>
+      <div class="sequence-container">
+        <div class="note-sequence" id="melody-notes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA: INTERVALO -->
+  <div class="tab-page" id="tab-interval">
+    <div class="section">
+      <h2>📏 Intervalo Entre Notas</h2>
+      <p class="exercise-desc">Vá até a aba "Braço" e clique em duas notas do braço — o intervalo aparece aqui.</p>
+      <div class="interval-display">
+        <div class="label">Intervalo</div>
+        <div class="value" id="interval-display">Selecione 2 notas</div>
+      </div>
+      <div id="interval-name-info" style="display: none;">
+        <div class="detail-card">
+          <h4>📖 Sobre Este Intervalo</h4>
+          <p id="interval-explanation">Selecione 2 notas para ver a explicação.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA: EXERCÍCIOS -->
+  <div class="tab-page" id="tab-exercises">
+    <div class="section">
+      <h2>🎯 Notas Abertas Primeiro</h2>
+      <p class="exercise-desc">Começa com as cordas soltas e adiciona casas gradualmente. Ótimo para aquecer e ganhar confiança!</p>
+      <button class="btn secondary" onclick="generateOpenStringsFirst()">▶ Gerar Sequência</button>
+      <div class="sequence-container" style="margin-top: 1rem;">
+        <div class="note-sequence" id="open-first-sequence"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎲 Sequência Aleatória</h2>
+      <p class="exercise-desc">Gera uma sequência aleatória de notas da escala para treinar improviso.</p>
+      <button class="btn secondary" onclick="generateRandomSequence()">🎲 Gerar Sequência Aleatória</button>
+      <div class="sequence-container" style="margin-top: 1rem;">
+        <div class="note-sequence" id="random-sequence"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA: BANDAS -->
+  <div class="tab-page" id="tab-bands">
+    <div class="section">
+      <h2>🎸 Bandas & Tons Comuns</h2>
+      <div id="bandas-list"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+  const instruments = {
+    bass: { name: 'Contrabaixo', icon: '🎸', strings: ['E', 'A', 'D', 'G'], frets: 12 },
+    guitar: { name: 'Violão', icon: '🎶', strings: ['E', 'A', 'D', 'G', 'B', 'E'], frets: 12 },
+    ukulele: { name: 'Ukulele', icon: '🌴', strings: ['G', 'C', 'E', 'A'], frets: 12 },
+    cavaquinho: { name: 'Cavaquinho', icon: '🥁', strings: ['D', 'G', 'B', 'E'], frets: 12 }
+  };
+
+  // Frequências base das cordas soltas de cada instrumento (Hz)
+  const stringFrequencies = {
+    bass: [41.20, 55.00, 73.42, 98.00],                // E1, A1, D2, G2
+    guitar: [82.41, 110.00, 146.83, 196.00, 246.94, 329.63], // E2, A2, D3, G3, B3, E4
+    ukulele: [392.00, 261.63, 329.63, 440.00],          // G4, C4, E4, A4
+    cavaquinho: [293.66, 392.00, 493.88, 587.33]       // D4, G4, B4, D5
+  };
+
+  // Frequências base das notas (Oitava 4)
+  const noteFrequencies = {
+    'C': 261.63, 'C#': 277.18, 'D': 293.66, 'D#': 311.13,
+    'E': 329.63, 'F': 349.23, 'F#': 369.99, 'G': 392.00,
+    'G#': 415.30, 'A': 440.00, 'A#': 466.16, 'B': 493.88
+  };
+
+  const scales = {
+    major: {
+      intervals: [0, 2, 4, 5, 7, 9, 11],
+      title: 'Maior (Jônica)',
+      description: 'Som alegre, luminoso e bem-estruturado. A base da harmonia ocidental.',
+      usage: 'Pop, rock, qualquer coisa em tom maior. O padrão.',
+      example: 'Ex: Blink-182, Sum 41, Good Charlotte — som otimista e cristalino',
+      interesting: 'O modo 1 da escala maior. Intervalos: T, 2M, 3M, 4J, 5J, 6M, 7M.',
+      melody: ['C', 'E', 'G'],
+      bandas: [
+        { icon: '🎸', nome: 'Blink-182', tons: 'C, D, G' },
+        { icon: '⚡', nome: 'Sum 41', tons: 'E, D, A' },
+        { icon: '💥', nome: 'Good Charlotte', tons: 'D, A, E' }
+      ]
+    },
+    minor: {
+      intervals: [0, 2, 3, 5, 7, 8, 10],
+      title: 'Menor Natural (Eólia)',
+      description: 'Som melancólico, introspectivo mas não dramatizado. Muito comum em rock e metal.',
+      usage: 'Rock, metal, qualquer coisa em tom menor. O segundo padrão mais usado.',
+      example: 'Ex: Nirvana, Green Day, CPM 22 — som emo/angst/sensível',
+      interesting: 'O modo 6 da escala maior. Relativa menor da maior (3 semitons abaixo).',
+      melody: ['A', 'C', 'E'],
+      bandas: [
+        { icon: '🖤', nome: 'Nirvana', tons: 'E, A, D' },
+        { icon: '✊', nome: 'Green Day', tons: 'E, D, A' },
+        { icon: '🇧🇷', nome: 'CPM 22', tons: 'A, D, E' }
+      ]
+    },
+    pentatonic_minor: {
+      intervals: [0, 3, 5, 7, 10],
+      title: 'Pentatônica Menor',
+      description: 'Som leve mas pesado, muito usada em blues e metal. 5 notas só — bem fácil de memorizar.',
+      usage: 'Blues, metal, rock. Perfeita pra começar a improvisar.',
+      example: 'Ex: Deftones, Slipknot, Limp Bizkit, Pantera — som gritado e selvagem',
+      interesting: 'Só 5 notas! Ótima pra iniciantes. Nenhuma nota dissonante — tudo combina bem.',
+      melody: ['A', 'C', 'E'],
+      bandas: [
+        { icon: '🌀', nome: 'Deftones', tons: 'F#, E, A' },
+        { icon: '🔥', nome: 'Slipknot', tons: 'D, A, E' },
+        { icon: '🤘', nome: 'Limp Bizkit', tons: 'A, E, D' }
+      ]
+    },
+    pentatonic_major: {
+      intervals: [0, 2, 4, 7, 9],
+      title: 'Pentatônica Maior',
+      description: 'Som feliz e fluido, 5 notas maiores. Muito usado em pop-rock e funk rock.',
+      usage: 'Pop, funk rock, solos leves. Quando a menor é pesada demais.',
+      example: 'Ex: Pop-rock BR, funk rock — som dançante e positivo',
+      interesting: 'Relativa maior da pentatônica menor (3 semitons acima). Mesmas notas, contexto diferente.',
+      melody: ['C', 'E', 'G'],
+      bandas: [
+        { icon: '🎉', nome: 'Pop-rock BR', tons: 'D, A, E' },
+        { icon: '🎶', nome: 'Funk rock', tons: 'E, A, D' },
+        { icon: '✨', nome: 'Soul/R&B', tons: 'A, D, E' }
+      ]
+    },
+    dorian: {
+      intervals: [0, 2, 3, 5, 7, 9, 10],
+      title: 'Dórica',
+      description: 'Dórica é jazzy e cool — 2º modo da escala maior. Som sofisticado com toque menor mas mais brilhante.',
+      usage: 'Jazz, prog metal, rock progressivo. Para quando quer um som menor sofisticado.',
+      example: 'Ex: Dream Theater, prog metal — som complexo e inteligente',
+      interesting: 'É o 2º modo da escala maior. Traz um toque "jazzy" e sofisticado.',
+      melody: ['D', 'F', 'A'],
+      bandas: [
+        { icon: '🧠', nome: 'Dream Theater', tons: 'D, E, F#' },
+        { icon: '⚙️', nome: 'Prog metal', tons: 'A, D, E' },
+        { icon: '🎸', nome: 'Funk progressivo', tons: 'D, G, A' }
+      ]
+    },
+    phrygian: {
+      intervals: [0, 1, 3, 5, 7, 8, 10],
+      title: 'Frígia',
+      description: 'Frígia é exótica e dramatizada — tem um sotaque "espanhol" ou "oriental" muito característico. Som sombrio.',
+      usage: 'Metal progressivo, bandas experimentais. Para quando você quer soar misterioso.',
+      example: 'Ex: System of a Down, passagens de metal progressivo — som único',
+      interesting: 'O semitom no começo dá o "sotaque espanhol". Raro mas super característico.',
+      melody: ['E', 'F', 'G', 'B'],
+      bandas: [
+        { icon: '🌍', nome: 'System of a Down', tons: 'E, D, F#' },
+        { icon: '🎭', nome: 'Metal experimental', tons: 'F#, A, D' },
+        { icon: '🎬', nome: 'Rock progressivo', tons: 'E, A, D' }
+      ]
+    },
+    lydian: {
+      intervals: [0, 2, 4, 6, 7, 9, 11],
+      title: 'Lídio',
+      description: 'Lídio é a maior "levantada" — som mágico, onírico, quase irreal. 4ª aumentada característico.',
+      usage: 'Seções experimentais, interlúdios. Sensação de levitation.',
+      example: 'Ex: Interlúdios experimentais em bandas prog/post-grunge — som levitante',
+      interesting: 'Som levitante e etéreo — perfeito para momentos surreais em composições.',
+      melody: ['F', 'G', 'A', 'C'],
+      bandas: [
+        { icon: '🌌', nome: 'Interlúdios prog', tons: 'F#, A, D' },
+        { icon: '👻', nome: 'Post-grunge experimental', tons: 'E, A, D' }
+      ]
+    },
+    mixolydian: {
+      intervals: [0, 2, 4, 5, 7, 9, 10],
+      title: 'Mixolídio',
+      description: 'Mixolídio é como a maior em modo blues — som que naturally soa "rockeador". Muito usado em rock clássico.',
+      usage: 'Rock clássico, blues rock, solos com atitude. Som naturalmente pesado mas maior.',
+      example: 'Ex: Riffs de rock clássico (Led Zeppelin style) — som confiante',
+      interesting: 'A "maior para rock". Muito usada em blues rock e heavy rock clássico.',
+      melody: ['G', 'B', 'D', 'F'],
+      bandas: [
+        { icon: '🎸', nome: 'Rock clássico', tons: 'E, A, D' },
+        { icon: '🎺', nome: 'Blues rock', tons: 'E, G, D' },
+        { icon: '💪', nome: 'Hard rock', tons: 'D, A, E' }
+      ]
+    },
+    harmonic_minor: {
+      intervals: [0, 2, 3, 5, 7, 8, 11],
+      title: 'Menor Harmônica',
+      description: 'Menor harmônica é a menor com um intervalo diferente que cria drama clássico — som cinematográfico e intenso.',
+      usage: 'Metal neoclássico, momentos de tensão. Para impacto máximo.',
+      example: 'Ex: Yngwie Malmsteen, metal progressivo neoclássico — som épico',
+      interesting: 'O intervalo especial (7ª maior) cria uma tensão harmônica muito única.',
+      melody: ['A', 'C', 'E', 'G#'],
+      bandas: [
+        { icon: '⚡', nome: 'Yngwie Malmsteen', tons: 'G#, E, A' },
+        { icon: '🏰', nome: 'Metal progressivo épico', tons: 'E, A, D' },
+        { icon: '👑', nome: 'Neoclassical metal', tons: 'F#, D, E' }
+      ]
+    },
+    blues: {
+      intervals: [0, 3, 5, 6, 7, 10],
+      title: 'Blues Menor',
+      description: 'Blues é a pentatônica menor com uma nota extra — a "blue note" (5ª diminuída/4ª aug). Som "choroso" e soulful.',
+      usage: 'Blues, rock gritty, soul rock. Quando você quer sentimento bruto.',
+      example: 'Ex: Alice in Chains, Soundgarden, SRV — som rasgado e soulful',
+      interesting: 'A blue note (5ª aumentada/diminuída) é o tempero que torna o som tão característico.',
+      melody: ['A', 'C', 'D', 'D#', 'E'],
+      bandas: [
+        { icon: '🔗', nome: 'Alice in Chains', tons: 'E, D, A' },
+        { icon: '🌲', nome: 'Soundgarden', tons: 'E, D, F#' },
+        { icon: '🎵', nome: 'SRV-style rock', tons: 'E, A, D' }
+      ]
+    }
+  };
+
+  const intervalNames = {
+    0: 'Uníssono', 1: 'Semitom / 2ª Menor', 2: '2ª Maior', 3: '3ª Menor',
+    4: '3ª Maior', 5: '4ª Justa', 6: 'Trítono / 4ª Aumentada', 7: '5ª Justa',
+    8: '5ª Aumentada / 6ª Menor', 9: '6ª Maior', 10: '7ª Menor', 11: '7ª Maior'
+  };
+
+  const intervalExplanations = {
+    1: 'Semitom — o menor intervalo. Cria tensão máxima. Usado em passagens intensas.',
+    2: '2ª Maior — intervalo pequeno, amigável. Comum em melodias pop.',
+    3: '3ª Menor — cria som melancólico, triste. Base de acordes menores.',
+    4: '3ª Maior — som alegre, luminoso. Base de acordes maiores.',
+    5: '4ª Justa — intervalo estável, usado em linhas de baixo estruturadas.',
+    6: 'Trítono — som misterioso, dissonante. Evitado na música clássica tradicional, adorado em metal.',
+    7: '5ª Justa — intervalo perfeito, muito estável. O "power chord" de toda escala.',
+    8: '5ª Aumentada — som brilhante e tenso. Raro mas impactante.',
+    9: '6ª Maior — som quente, jazzístico. Muito usado em baladas.',
+    10: '7ª Menor — cria som de "resolução retardada". Comum em blues e rock.',
+    11: '7ª Maior — som brilhante e aberto. Muito usado em jazz sofisticado.'
+  };
+
+  let currentInstrument = 'bass';
+  let currentScale = 'major';
+  let currentRoot = 'A';
+  let selectedNotesForInterval = [];
+  let audioCtx = null;
+  let soundEnabled = true;
+
+  // Web Audio Synth
+  function initAudio() {
+    if (!audioCtx) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playFreq(freq, duration = 0.5) {
+    if (!soundEnabled) return;
+    try {
+      initAudio();
+      if (!audioCtx) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (err) {
+      console.warn('Audio playback error:', err);
+    }
+  }
+
+  function playNoteByName(noteName) {
+    const baseFreq = noteFrequencies[noteName] || 440;
+    playFreq(baseFreq);
+  }
+
+  function toggleAudio() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('audio-toggle-btn');
+    if (btn) {
+      if (soundEnabled) {
+        btn.textContent = '🔊 Som ON';
+        btn.classList.add('active-audio');
+      } else {
+        btn.textContent = '🔇 Som OFF';
+        btn.classList.remove('active-audio');
+      }
+    }
+  }
+
+  function backToSplash() {
+    const splash = document.getElementById('splash-screen');
+    const app = document.getElementById('app-container');
+    app.classList.remove('visible');
+    splash.classList.remove('hidden');
+  }
+
+  function selectTab(tabKey, el) {
+    document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabKey).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function getScaleNotes(root, scale) {
+    const rootIndex = notes.indexOf(root);
+    const intervals = scales[scale].intervals;
+    return intervals.map(interval => notes[(rootIndex + interval) % 12]);
+  }
+
+  function initializeInstruments() {
+    const container = document.getElementById('instrument-buttons');
+    container.innerHTML = '';
+    Object.entries(instruments).forEach(([key, instr]) => {
+      const btn = document.createElement('button');
+      btn.className = 'instrument-btn';
+      btn.innerHTML = `<span class="icon">${instr.icon}</span><span>${instr.name}</span>`;
+      btn.onclick = () => selectInstrument(key, btn);
+      if (key === currentInstrument) btn.classList.add('active');
+      container.appendChild(btn);
+    });
+  }
+
+  function selectInstrument(key, element) {
+    document.querySelectorAll('.instrument-btn').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+    currentInstrument = key;
+    localStorage.setItem('instrument', key);
+    updateDisplay();
+  }
+
+  function initializeButtons() {
+    const scaleButtons = document.getElementById('scale-buttons');
+    scaleButtons.innerHTML = '';
+    Object.keys(scales).forEach((scaleKey) => {
+      const info = scales[scaleKey];
+      const card = document.createElement('div');
+      card.className = 'scale-card';
+      card.dataset.scale = scaleKey;
+      if (scaleKey === currentScale) card.classList.add('selected');
+
+      card.innerHTML = `
+        <div class="scale-card-header">
+          <span>${info.title}</span>
+          <span class="scale-card-chevron">▸</span>
+        </div>
+        <div class="scale-card-details">
+          <div class="scale-card-details-inner">
+            <span class="mini-label">💡 Como Usar</span>
+            <p>${info.usage}</p>
+            <span class="mini-label">🎸 Exemplo</span>
+            <p>${info.example}</p>
+            <button class="scale-card-select-btn" data-select="${scaleKey}">▸ Usar Esta Escala</button>
+            <button class="scale-card-close">✕ Fechar</button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector('.scale-card-header').onclick = () => toggleScaleCard(scaleKey);
+      card.querySelector('.scale-card-select-btn').onclick = (e) => {
+        e.stopPropagation();
+        selectScale(scaleKey);
+      };
+      card.querySelector('.scale-card-close').onclick = (e) => {
+        e.stopPropagation();
+        toggleScaleCard(scaleKey);
+      };
+
+      scaleButtons.appendChild(card);
+    });
+    refreshScaleSelectButtons();
+
+    const noteButtons = document.getElementById('note-buttons');
+    noteButtons.innerHTML = '';
+    notes.forEach(note => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.textContent = note;
+      btn.onclick = () => {
+        selectNote(note, btn);
+        playNoteByName(note);
+      };
+      if (note === currentRoot) btn.classList.add('active');
+      noteButtons.appendChild(btn);
+    });
+  }
+
+  function toggleScaleCard(scaleKey) {
+    const grid = document.getElementById('scale-buttons');
+    const card = document.querySelector(`.scale-card[data-scale="${scaleKey}"]`);
+    const wasExpanded = card.classList.contains('expanded');
+    document.querySelectorAll('.scale-card').forEach(c => c.classList.remove('expanded'));
+    if (!wasExpanded) {
+      card.classList.add('expanded');
+      grid.classList.add('has-expanded');
+    } else {
+      grid.classList.remove('has-expanded');
+    }
+  }
+
+  function refreshScaleSelectButtons() {
+    document.querySelectorAll('.scale-card-select-btn').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.select === currentScale);
+    });
+  }
+
+  function selectScale(scaleKey) {
+    document.querySelectorAll('.scale-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`.scale-card[data-scale="${scaleKey}"]`).classList.add('selected');
+    currentScale = scaleKey;
+    refreshScaleSelectButtons();
+    updateDisplay();
+  }
+
+  function selectNote(note, element) {
+    document.querySelectorAll('#note-buttons .btn').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+    currentRoot = note;
+    updateDisplay();
+  }
+
+  function playOpenString(stringIndex) {
+    const baseFreq = stringFrequencies[currentInstrument][stringIndex];
+    playFreq(baseFreq, 0.8);
+  }
+
+  function updateDisplay() {
+    const scaleNotes = getScaleNotes(currentRoot, currentScale);
+    const scaleInfo = scales[currentScale];
+    const instrument = instruments[currentInstrument];
+    const stringLabels = instrument.strings;
+
+    document.getElementById('current-instrument-label').textContent = instrument.name;
+    document.getElementById('current-scale-label').textContent = scaleInfo.title;
+    document.getElementById('current-root-label').textContent = currentRoot;
+
+    // Cordas soltas
+    const openStringsContainer = document.getElementById('open-strings-container');
+    openStringsContainer.innerHTML = stringLabels.map((stringNote, idx) => `
+      <div class="open-string-card" onclick="playOpenString(${idx})" title="Clique para ouvir a corda solta">
+        <div class="label">Corda ${idx + 1}</div>
+        <div class="note">${stringNote}</div>
+      </div>
+    `).join('');
+
+    // Fretboard
+    const container = document.getElementById('fretboard-container-inner');
+    container.innerHTML = '';
+    selectedNotesForInterval = [];
+
+    stringLabels.forEach((stringTonic, stringIndex) => {
+      const stringDiv = document.createElement('div');
+      stringDiv.className = 'string';
+
+      const label = document.createElement('div');
+      label.className = 'string-label';
+      label.textContent = stringTonic;
+      stringDiv.appendChild(label);
+
+      for (let fret = 0; fret <= instrument.frets; fret++) {
+        const noteAtFret = notes[(notes.indexOf(stringTonic) + fret) % 12];
+        const cell = document.createElement('div');
+        cell.className = 'fret-cell';
+        cell.textContent = noteAtFret;
+
+        if (scaleNotes.includes(noteAtFret)) {
+          cell.classList.add('in-scale');
+          if (noteAtFret === currentRoot) cell.classList.add('root-note');
+        }
+
+        cell.style.cursor = 'pointer';
+        cell.onclick = () => {
+          // Tocando som da nota exata no braço
+          const baseFreq = stringFrequencies[currentInstrument][stringIndex];
+          const fretFreq = baseFreq * Math.pow(2, fret / 12);
+          playFreq(fretFreq);
+
+          selectedNotesForInterval.push({ note: noteAtFret, string: stringIndex, fret: fret, el: cell });
+          if (selectedNotesForInterval.length > 2) {
+            const removed = selectedNotesForInterval.shift();
+            removed.el.classList.remove('interval-selected');
+          }
+          cell.classList.add('interval-selected');
+          updateInterval();
+        };
+
+        stringDiv.appendChild(cell);
+      }
+
+      container.appendChild(stringDiv);
+    });
+
+    // Info
+    document.getElementById('scale-title').textContent = `${scaleInfo.title} em ${currentRoot}`;
+    document.getElementById('scale-description').textContent = scaleInfo.description;
+
+    document.getElementById('scale-details').innerHTML = `
+      <div class="detail-card">
+        <h4>💡 Como Usar</h4>
+        <p>${scaleInfo.usage}</p>
+      </div>
+      <div class="detail-card">
+        <h4>🎸 Exemplos</h4>
+        <p>${scaleInfo.example}</p>
+        <p style="margin-top: 0.5rem;">${scaleInfo.interesting}</p>
+      </div>
+    `;
+
+    // Melodia
+    document.getElementById('melody-notes').innerHTML = scaleInfo.melody.map(note => {
+      return `<div class="scale-note" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}</div>`;
+    }).join('');
+
+    // Escala completa (1 oitava)
+    let sequenceHTML = '';
+    for (let i = 0; i < scaleNotes.length; i++) {
+      const note = scaleNotes[i];
+      const isRoot = note === currentRoot;
+      sequenceHTML += `<div class="scale-note ${isRoot ? 'root' : ''}" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}</div>`;
+      if (i < scaleNotes.length - 1) sequenceHTML += `<span class="scale-separator">→</span>`;
+    }
+    document.getElementById('scale-sequence-notes').innerHTML = sequenceHTML;
+
+    // Bandas
+    const bandasList = document.getElementById('bandas-list');
+    if (scaleInfo.bandas && scaleInfo.bandas.length > 0) {
+      bandasList.innerHTML = scaleInfo.bandas.map(banda => `
+        <div class="banda-item">
+          <div class="banda-nome">${banda.icon} ${banda.nome}</div>
+          <div class="banda-tons"><strong>Tons:</strong> ${banda.tons}</div>
+        </div>
+      `).join('');
+    }
+
+    // Notas
+    document.getElementById('notes-list').innerHTML = scaleNotes.map(note => {
+      const isRoot = note === currentRoot;
+      return `<div class="note-badge ${isRoot ? 'root' : ''}" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}${isRoot ? ' ●' : ''}</div>`;
+    }).join('');
+
+    // Reset interval display ao trocar escala/instrumento
+    document.getElementById('interval-display').textContent = 'Selecione 2 notas';
+    document.getElementById('interval-display-inline').textContent = 'Clique em 2 notas do braço';
+    document.getElementById('interval-name-info').style.display = 'none';
+  }
+
+  function updateInterval() {
+    const display = document.getElementById('interval-display');
+    const displayInline = document.getElementById('interval-display-inline');
+    const explanationDiv = document.getElementById('interval-name-info');
+    
+    if (selectedNotesForInterval.length === 2) {
+      const note1Index = notes.indexOf(selectedNotesForInterval[0].note);
+      const note2Index = notes.indexOf(selectedNotesForInterval[1].note);
+      const semitones = (note2Index - note1Index + 12) % 12;
+      
+      const intervalName = intervalNames[semitones];
+      const text = `${selectedNotesForInterval[0].note} → ${selectedNotesForInterval[1].note} = ${intervalName}`;
+      display.textContent = text;
+      displayInline.textContent = text;
+      
+      document.getElementById('interval-explanation').textContent = intervalExplanations[semitones] || 'Intervalo especial.';
+      explanationDiv.style.display = 'block';
+    } else if (selectedNotesForInterval.length === 1) {
+      display.textContent = `${selectedNotesForInterval[0].note} → clique em mais 1 nota`;
+      displayInline.textContent = `${selectedNotesForInterval[0].note} → clique em mais 1 nota`;
+      explanationDiv.style.display = 'none';
+    } else {
+      display.textContent = 'Clique em 2 notas';
+      displayInline.textContent = 'Clique em 2 notas do braço';
+      explanationDiv.style.display = 'none';
+    }
+  }
+
+  function generateRandomSequence() {
+    const scaleNotes = getScaleNotes(currentRoot, currentScale);
+    const container = document.getElementById('random-sequence');
+    let sequence = [];
+    for (let i = 0; i < 12; i++) {
+      sequence.push(scaleNotes[Math.floor(Math.random() * scaleNotes.length)]);
+    }
+    container.innerHTML = sequence.map(note => {
+      const isRoot = note === currentRoot;
+      return `<div class="scale-note ${isRoot ? 'root' : ''}" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}</div>`;
+    }).join('<span class="scale-separator">→</span>');
+  }
+
+  function generateOpenStringsFirst() {
+    const instrument = instruments[currentInstrument];
+    const scaleNotes = getScaleNotes(currentRoot, currentScale);
+    const container = document.getElementById('open-first-sequence');
+    let sequence = [...instrument.strings];
+    for (let i = 0; i < 6; i++) {
+      sequence.push(scaleNotes[Math.floor(Math.random() * scaleNotes.length)]);
+    }
+    container.innerHTML = sequence.map(note => {
+      const isRoot = note === currentRoot;
+      const isOpenString = instrument.strings.includes(note);
+      return `<div class="scale-note ${isRoot ? 'root' : ''}" style="opacity: ${isOpenString ? '1' : '0.8'}" onclick="playNoteByName('${note}')" title="Clique para ouvir ${note}">${note}</div>`;
+    }).join('<span class="scale-separator">→</span>');
+  }
+
+  // ===== TELA INICIAL =====
+  function createMatrixEffect() {
+    const matrixBg = document.getElementById('matrix-bg');
+    const chars = '01アイウエオカキクケコサシスセソタチツテト';
+    for (let i = 0; i < 50; i++) {
+      const char = document.createElement('div');
+      char.className = 'matrix-char';
+      char.textContent = chars[Math.floor(Math.random() * chars.length)];
+      char.style.left = Math.random() * 100 + '%';
+      char.style.top = Math.random() * 100 + '%';
+      char.style.animation = `matrix-fall ${3 + Math.random() * 5}s linear infinite`;
+      char.style.animationDelay = Math.random() * 2 + 's';
+      matrixBg.appendChild(char);
+    }
+  }
+
+  function enterSystem() {
+    initAudio();
+    const splash = document.getElementById('splash-screen');
+    const app = document.getElementById('app-container');
+    splash.classList.add('hidden');
+    setTimeout(() => { app.classList.add('visible'); }, 150);
+  }
+
+  // Init
+  currentInstrument = localStorage.getItem('instrument') || 'bass';
+
+  createMatrixEffect();
+  initializeInstruments();
+  initializeButtons();
+  updateDisplay();
+</script>
+
+</body>
+</html>
